@@ -73,6 +73,11 @@ public class Order  {
         OrderMoniter orderMoniter = new OrderMoniter(this);
         orderMoniter.publishAfterCommit();
 
+        // Get request from Delivery
+        //food.delivery.external.Delivery delivery =
+        //    Application.applicationContext.getBean(food.delivery.external.DeliveryService.class)
+        //    .getDelivery(/** mapping value needed */);
+
     }
     @PreRemove
     public void onPreRemove(){
