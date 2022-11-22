@@ -67,12 +67,17 @@ public class Delivery  {
         return deliveryRepository;
     }
 
-    public void decreate rider(){
+    public void decreaterider(){
         //
     }
 
 
     public void decreaterider(DecreateriderCommand decreateriderCommand){
+        decreateriderCommand.setriderQty(getriderQty() - decreateriderCommand.getriderQty().longValue());   
+    }
+
+    private int getriderQty() {
+        return 0;
     }
 
     public static void orderinfCopy(OrderPlaced orderPlaced){

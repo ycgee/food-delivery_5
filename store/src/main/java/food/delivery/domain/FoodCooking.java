@@ -94,29 +94,30 @@ public class FoodCooking  {
 
 
     public void accept(AcceptCommand acceptCommand){
-        OrderAccepted orderAccepted = new OrderAccepted(this);
-        orderAccepted.publishAfterCommit();
+        if(acceptCommand.getAccept()){
+            OrderAccepted orderAccepted = new OrderAccepted(this);
+            orderAccepted.publishAfterCommit();
 
-        //Following code causes dependency to external APIs
-        // it is NOT A GOOD PRACTICE. instead, Event-Policy mapping is recommended.
+            setStatus("접수됨");
+        }else{
+            OrderRejected orderRejected = new OrderRejected(this);
+            orderRejected.publishAfterCommit();
 
-        food.delivery.external.Delivery delivery = new food.delivery.external.Delivery();
-        // mappings goes here
-        StoreApplication.applicationContext.getBean(food.delivery.external.DeliveryService.class)
-            .decreaterider(delivery);
-
-        OrderRejected orderRejected = new OrderRejected(this);
-        orderRejected.publishAfterCommit();
+            setStatus("거절됨");
+        }
+    
 
     }
 
     public static void orderInfCopy(OrderPlaced orderPlaced){
 
-        /** Example 1:  new item 
         FoodCooking foodCooking = new FoodCooking();
+        foodCooking.setCustomerId(orderPlaced.getCustomerId());
+        foodCooking.setFoodId(orderPlaced.getFoodId());
+        foodCooking.setOrderId(String.valueOf(orderPlaced.getId()));
+        foodCooking.setStatus("미결재");
         repository().save(foodCooking);
 
-        */
 
         /** Example 2:  finding and process
         
@@ -139,16 +140,15 @@ public class FoodCooking  {
 
         */
 
-        /** Example 2:  finding and process
+        /** Example 2:  finding and process*/
         
-        repository().findById(paid.get???()).ifPresent(foodCooking->{
+        repository().findByOrderId(paid.getOrderId()).ifPresent(foodCooking->{ 
             
-            foodCooking // do something
+            foodCooking.setStatus("결재됨");
             repository().save(foodCooking);
 
-
          });
-        */
+        
 
         
     }
