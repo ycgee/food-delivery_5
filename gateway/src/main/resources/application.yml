@@ -12,6 +12,10 @@ spring:
           uri: http://localhost:8081
           predicates:
             - Path=/orders/**, /payments/**, 
+        - id: front_1
+          uri: http://localhost:8090
+          predicates:
+            - Path=/orders/**,            
         - id: store
           uri: http://localhost:8082
           predicates:

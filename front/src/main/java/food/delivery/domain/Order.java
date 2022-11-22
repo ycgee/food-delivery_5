@@ -83,6 +83,19 @@ public class Order  {
 
     }
 
+    @PrePersist
+    public void onPrePersist() {
+        // Get request from Inventory
+        Delivery delivery =
+           Application.applicationContext.getBean(DeliveryService.class).getriderQty();
+
+        if(delivery.getOrderId() < getriderQty()) throw new RuntimeException("배송불가");
+
+    }
+
+    private int getriderQty() {
+        return 0;
+    }
     public static OrderRepository repository(){
         OrderRepository orderRepository = FrontApplication.applicationContext.getBean(OrderRepository.class);
         return orderRepository;
